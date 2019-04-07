@@ -1,0 +1,38 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta itemprop="name" content="TFJS Hack '19" />
+    <meta name="description" content="TFJS Hack '19" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="theme-color" content="#2196f3">
+    <base target="_blank" />
+    <title>Vidur Apple</title>
+    <link rel="shortcut icon" type="image/png" href="https://andrewlock.net/content/images/2016/10/icon.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="main.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container center">
+        <div class="row">
+            <div class="input-field col s6 m4">
+                Source:<select id="videoSource"></select>
+            </div>
+        </div>
+        <div class="row">
+            <video muted autoplay></video><br><br>
+            <a id="take_snapshot" class="waves-effect waves-light btn"><i
+                    class="material-icons left">camera_alt</i>CLICK</a>
+            <br><br>
+            <canvas></canvas>
+        </div>
+
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="app.js" async></script>
+</body>
+
+</html>
