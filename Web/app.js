@@ -8,34 +8,40 @@ button.onclick = function () {
 	canvas.width = video.videoWidth;
 	canvas.height = video.videoHeight;
 	canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-	
-	var b64Image = canvas.toDataURL('image/jpeg')
-	var base64ImageContent = b64Image.replace(/^data:image\/(png|jpg);base64,/, "");
-	var blob = base64ToBlob(base64ImageContent, 'image/png');
+
+	var ImageURL = canvas.toDataURL('image/jpeg')
+	var block = ImageURL.split(";");
+	var contentType = block[0].split(":")[1];
+	var realData = block[1].split(",")[1];
+
+	var blob = b64toBlob(realData, contentType);
 	var formData = new FormData();
-	formData.append('picture', blob);
+	formData.append('image', blob);
 
 	// POST HERE
-	// $.ajax({
-	// 	type: "POST",
-	// 	url: "<url>",
-	// 	data: {
-	// 		imgBase64: formData
-	// 	}
-	// }).done(function (o) {
-	// 	console.log('SENT', o);
-	// });
+	$.ajax({
+		type: "POST",
+		url: "https://f48c6e9c.ngrok.io/image",
+		data: formData,
+		dataType: "json",
+		contentType: false,
+		processData: false,
+		cache: false,
+	}).done(function (response) {
+		console.log(response);
+	});
 }
 
 
-function base64ToBlob(base64, mime) {
-	mime = mime || '';
-	var sliceSize = 1024;
-	var byteChars = window.atob(base64);
+function b64toBlob(b64Data, contentType, sliceSize) {
+	contentType = contentType || '';
+	sliceSize = sliceSize || 512;
+
+	var byteCharacters = atob(b64Data);
 	var byteArrays = [];
 
-	for (var offset = 0, len = byteChars.length; offset < len; offset += sliceSize) {
-		var slice = byteChars.slice(offset, offset + sliceSize);
+	for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+		var slice = byteCharacters.slice(offset, offset + sliceSize);
 
 		var byteNumbers = new Array(slice.length);
 		for (var i = 0; i < slice.length; i++) {
@@ -47,9 +53,10 @@ function base64ToBlob(base64, mime) {
 		byteArrays.push(byteArray);
 	}
 
-	return new Blob(byteArrays, {
-		type: mime
+	var blob = new Blob(byteArrays, {
+		type: contentType
 	});
+	return blob;
 }
 
 

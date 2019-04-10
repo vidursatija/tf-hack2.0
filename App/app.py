@@ -1,8 +1,9 @@
 import time
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 import pickle
 import numpy as np
-from PIL import image
+import base64
+from PIL import Image
 from io import BytesIO
 
 # Communication to TensorFlow server via gRPC
@@ -33,6 +34,7 @@ def sendRequest(im):
     return predictions
 """
 
+
 @app.route('/ping')
 def ping():
     print(request.get_json())
@@ -50,11 +52,12 @@ im = Image.open(BytesIO(base64.b64decode(data)))
 # https://stackoverflow.com/questions/26070547/decoding-base64-from-post-to-use-in-pil
 '''
 
+
 @app.route('/image', methods=['POST'])
 def api():
-    im = Image.open(BytesIO(base64.b64decode(request.form['image'])))
-    numpy_im = np.array(im)
-    return jsonify({"shape": numpy_im.shape})
+    img = Image.open(request.files.get("image"))
+    numpy_im = np.array(img)
+    return jsonify({"shape": list(numpy_im.shape)})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True, port=443)
