@@ -17,19 +17,15 @@ button.onclick = function () {
 	var blob = b64toBlob(realData, contentType);
 	var formData = new FormData();
 	formData.append('image', blob);
-
-	// POST HERE
-	$.ajax({
-		type: "POST",
-		url: "https://f48c6e9c.ngrok.io/image",
-		data: formData,
-		dataType: "json",
-		contentType: false,
-		processData: false,
-		cache: false,
-	}).done(function (response) {
-		console.log(response);
-	});
+	
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.open("POST", "https://hack3r.herokuapp.com/image");
+	xmlhttp.onreadystatechange = function () {
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			alert(xmlhttp.responseText);
+		}
+	}
+	xmlhttp.send(formData);
 }
 
 

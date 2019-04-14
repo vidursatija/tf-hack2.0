@@ -57,7 +57,11 @@ im = Image.open(BytesIO(base64.b64decode(data)))
 def api():
     img = Image.open(request.files.get("image"))
     numpy_im = np.array(img)
-    return jsonify({"shape": list(numpy_im.shape)})
+    print({"shape": list(numpy_im.shape)})
+    result = "".join(str(numpy_im.shape))
+    resp = Response(result)
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+    return resp
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True, port=443)
