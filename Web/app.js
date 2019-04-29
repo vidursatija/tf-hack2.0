@@ -17,9 +17,9 @@ button.onclick = function () {
 	var blob = b64toBlob(realData, contentType);
 	var formData = new FormData();
 	formData.append('image', blob);
-	
+
 	var xmlhttp = new XMLHttpRequest();
-	xmlhttp.open("POST", "https://hack3r.herokuapp.com/image");
+	xmlhttp.open("POST", "http://0.0.0.0:443/image");
 	xmlhttp.onreadystatechange = function () {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 			alert(xmlhttp.responseText);
@@ -107,3 +107,33 @@ function gotStream(stream) {
 function handleError(error) {
 	console.log('Error: ', error);
 }
+
+
+// Live camera view
+$('.disc--camera').on('click', function () {
+	$("video").addClass("is-gone");
+	$("canvas").removeClass('is-gone');
+	$('.crop').addClass('crop--snapshot');
+	$('.crop-cam').text('(still)');
+	$('.disc--camera').fadeOut();
+	$('.disc--retake').removeClass('is-faded');
+	setTimeout(function () {
+		$('.disc--retake').addClass('is-moved');
+		$('.disc--share').removeClass('is-gone');
+		$('.crop').removeClass('crop--snapshot');
+	}, 500);
+});
+
+$('.disc--retake').on('click', function () {
+	$("canvas").addClass("is-gone");
+	$("video").removeClass('is-gone');
+	$('.disc--share').addClass('is-gone');
+	$('.disc--retake').removeClass('is-moved');
+	setTimeout(function () {
+		$('.disc--retake').addClass('is-faded');
+		$('.disc--camera').fadeIn(100);
+	}, 500);
+});
+
+// $('.disc--share').on('click', function () {
+// });

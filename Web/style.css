@@ -2,16 +2,96 @@ select {
     display: inline;
 }
 
-video {
-    width: 100%;
-    max-height: 100%;
-}
 
 canvas {
     width: 100%;
+    position: relative;
     max-height: 100%;
 }
 
-#take_snapshot {
-    margin: 15px;
+.row,
+.col {
+    padding: 0px;
+}
+
+/* Live camera */
+
+@keyframes snapshot {
+    0% {
+        background: #fff;
+    }
+
+    100% {
+        background: #444;
+    }
+}
+
+body {
+    background: #000;
+    color: #222;
+}
+
+.crop{
+    align-content: center;
+    width: 300px;
+    height: 300px;
+    /* display: inline; */
+    /* position: absolute; */
+}
+
+.crop.crop--snapshot {
+    animation: snapshot 0.5s ease;
+}
+
+.disc{
+    padding: 0px;
+}
+
+
+.disc {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    cursor: pointer;
+    position: absolute;
+    bottom: -32px;
+    transition: all 0.5s ease;
+    line-height: 64px;
+    text-align: center;
+    font-size: 12px;
+    color: #fff;
+    margin-left: -32px;
+    z-index: 2;
+    opacity: 1;
+}
+
+.disc.disc--camera {
+    background: #00b494;
+    left: 50%;
+    /* margin-left: -32px; */
+}
+
+.disc.disc--retake {
+    color: #444;
+    background: #d5d5d5;
+    left: 50%;
+}
+
+.disc.disc--retake.is-moved {
+    margin-left: -85.3px;
+}
+
+.disc.disc--share {
+    background: #146ceb;
+    left: 50%;
+    margin-left: 21.333px;
+}
+
+.is-faded {
+    opacity: 0;
+    z-index: 1;
+}
+
+.is-gone {
+    display: none;
 }

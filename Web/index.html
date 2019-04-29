@@ -18,23 +18,19 @@
 <body>
 	<div class="container">
 		<div class="row">
-			<div class="input-field col s6 m4">
+			<div class="input-field col s12 m12 ">
 				Source:<select id="videoSource"></select>
 			</div>
 			<div class="input-field col s6 m8"></div>
 		</div>
-		<div class="row">
-			<div class="col m5 s12">
-				<video muted autoplay></video>
-			</div>
-			<div class="col m2 s12 center">
-				<a id="take_snapshot" class="waves-effect waves-light btn">
-					<i class="material-icons left">camera_alt</i> CLICK</a>
-			</div>
-			<div class="col m5 s12">
-				<canvas></canvas>
-			</div>
-		</div>
+	</div>
+
+	<div class="row">
+		<canvas class="is-gone col s12 md6"></canvas>
+		<video class="col s12 md6 crop" muted autoplay></video><br>
+		<div class="disc disc--camera " id="take_snapshot" >camera</div>
+		<div class="disc disc--retake is-faded">retake</div>
+		<div class="disc disc--share is-gone">share</div>
 	</div>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
