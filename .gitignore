@@ -1,3 +1,7 @@
+# locals 
+.venv/
+.vscode/
+
 # Object file
 *.o
 

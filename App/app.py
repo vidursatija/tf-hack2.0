@@ -18,38 +18,30 @@ from tensorflow.contrib.util import make_tensor_proto
 app = Flask(__name__)
 
 host = '35.244.20.1'
-port = 8500
+port = 443
 channel = implementations.insecure_channel(host, port)
 stub = prediction_service_pb2.beta_create_PredictionService_stub(channel)
+
+f = open("imagenet_labels.txt", "r")
+label_array = f.readlines()
+f.close()
 
 def sendRequest(im):
     req = predict_pb2.PredictRequest()
     req.model_spec.name = 'resnet'
     req.model_spec.signature_name = 'predict'
-    req.inputs['input_tensor'].CopyFrom(make_tensor_proto(ids, shape=[1, 224, 224, 3], dtype=tf.float32))
+    req.inputs['input_tensor'].CopyFrom(make_tensor_proto(im, shape=[1, 224, 224, 3], dtype=tf.float32))
     result = stub.Predict(req, 60.0)
-
-    predictions = result.outputs['probabilities'].float32_val
-    return predictions
+    # print(result)
+    predictions = np.array(result.outputs['probabilities'].float_val)
+    max_val = np.argmax(predictions, axis=-1)
+    return label_array[max_val], predictions[max_val]
 
 
 @app.route('/ping')
 def ping():
     print(request.get_json())
     return "pong"
-
-'''
-from PIL import Image
-from io import BytesIO
-import base64
-
-data['img'] = 'R0lGODlhDwAPAKECAAAAzMzM/////wAAACwAAAAADwAPAAACIISPeQHsrZ5ModrLl
-N48CXF8m2iQ3YmmKqVlRtW4MLwWACH+H09wdGltaXplZCBieSBVbGVhZCBTbWFydFNhdmVyIQAAOw=='
-
-im = Image.open(BytesIO(base64.b64decode(data)))
-# https://stackoverflow.com/questions/26070547/decoding-base64-from-post-to-use-in-pil
-'''
-
 
 @app.route('/image', methods=['POST'])
 def api():
@@ -63,6 +55,7 @@ def api():
             numpy_img = np.pad(numpy_img, [((nis[1]-nis[0])//2, (nis[1]-nis[0]+1)//2), (0, 0), (0, 0)], 'constant')
     img = Image.fromarray(numpy_img)
     img = img.resize((224, 224), Image.NEAREST)
+    # img.save("temp.png", "PNG")
     reshaped_im = np.array(img).reshape([1, 224, 224, 3])
     preds = sendRequest(reshaped_im)
     # print({"shape": list(numpy_im.shape)})

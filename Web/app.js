@@ -19,6 +19,7 @@ button.onclick = function () {
 	formData.append('image', blob);
 
 	var xmlhttp = new XMLHttpRequest();
+	// xmlhttp.timeout = 40000;
 	xmlhttp.open("POST", "http://0.0.0.0:443/image");
 	xmlhttp.onreadystatechange = function () {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
@@ -68,6 +69,11 @@ function gotDevices(deviceInfos) {
 		var option = document.createElement('option');
 		option.value = deviceInfo.deviceId;
 
+		/* TODO: Remove on final
+		var device_name = deviceInfo.label.toLowerCase();
+		console.log(device_name,"*");
+		if (deviceInfo.kind === 'videoinput' && !(device_name.includes("face"))) {
+		*/ 
 		if (deviceInfo.kind === 'videoinput') {
 			option.text = deviceInfo.label || 'camera ' + (videoSelect.length + 1);
 			videoSelect.appendChild(option);
