@@ -1,3 +1,39 @@
+// Recycle Labels
+
+var yellowBinItems = {
+	899: 'water bottle',
+	654: 'can',
+	441: 'beer bottle',
+	550: 'envelope',
+	638: 'mailbox, letter box',
+	442: 'beer glass',
+	924: 'plate',
+	1000: 'toilet tissue, toilet paper, bathroom tissue'
+}
+
+var redBinItems = {
+	530: 'diaper, nappy, napkin',
+	846: 'syringe',
+	932: 'bagel, beigel',
+	934: 'cheeseburger',
+	935: 'hotdog, hot dog, red hot',
+	938: 'broccoli',
+	944: 'cucumber, cuke',
+	948: 'mushroom',
+	950: 'strawberry',
+	951: 'orange',
+	952: 'lemon',
+	954: 'pineapple, ananas',
+	955: 'banana',
+	964: 'pizza, pizza pie',
+	880: 'umbrella',
+	729: 'plastic bag',
+	911: 'wooden spoon',
+	624: 'letter opener, paper knife, paperknife',
+	957: 'custard apple',
+}
+
+
 const video = document.querySelector('video');
 const canvas = window.canvas = document.querySelector('canvas');
 var videoSelect = document.querySelector('#videoSource');
@@ -8,27 +44,7 @@ button.onclick = function () {
 	canvas.width = video.videoWidth;
 	canvas.height = video.videoHeight;
 	canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-
-	var ImageURL = canvas.toDataURL('image/jpeg')
-	var block = ImageURL.split(";");
-	var contentType = block[0].split(":")[1];
-	var realData = block[1].split(",")[1];
-
-	var blob = b64toBlob(realData, contentType);
-	var formData = new FormData();
-	formData.append('image', blob);
-
-	var xmlhttp = new XMLHttpRequest();
-	// xmlhttp.timeout = 40000;
-	xmlhttp.open("POST", "http://0.0.0.0:443/image");
-	xmlhttp.onreadystatechange = function () {
-		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-			alert(xmlhttp.responseText);
-		}
-	}
-	xmlhttp.send(formData);
 }
-
 
 function b64toBlob(b64Data, contentType, sliceSize) {
 	contentType = contentType || '';
@@ -55,7 +71,6 @@ function b64toBlob(b64Data, contentType, sliceSize) {
 	});
 	return blob;
 }
-
 
 navigator.mediaDevices.enumerateDevices().then(gotDevices).then(getStream).catch(handleError);
 
@@ -86,6 +101,7 @@ function gotDevices(deviceInfos) {
 	}
 }
 
+
 function getStream() {
 	if (window.stream) {
 		window.stream.getTracks().forEach(function (track) {
@@ -109,6 +125,7 @@ function gotStream(stream) {
 	video.srcObject = stream;
 }
 
+
 function handleError(error) {
 	console.log('Error: ', error);
 }
@@ -122,11 +139,13 @@ $('.disc--camera').on('click', function () {
 	$('.crop-cam').text('(still)');
 	$('.disc--camera').fadeOut();
 	$('.disc--retake').removeClass('is-faded');
+
 	setTimeout(function () {
 		$('.disc--retake').addClass('is-moved');
 		$('.disc--share').removeClass('is-gone');
 		$('.crop').removeClass('crop--snapshot');
 	}, 500);
+
 });
 
 $('.disc--retake').on('click', function () {
@@ -134,12 +153,38 @@ $('.disc--retake').on('click', function () {
 	$("video").removeClass('is-gone');
 	$('.disc--share').addClass('is-gone');
 	$('.disc--retake').removeClass('is-moved');
+	$('h4').addClass("is-gone");
+
 	setTimeout(function () {
 		$('.disc--retake').addClass('is-faded');
 		$('.disc--camera').fadeIn(100);
 	}, 500);
+	
 });
 
 $('.disc--share').on('click', function () {
 	console.log("SHARE CLICKED");
+	var ImageURL = canvas.toDataURL('image/jpeg')
+	var block = ImageURL.split(";");
+	var contentType = block[0].split(":")[1];
+	var realData = block[1].split(",")[1];
+
+	var blob = b64toBlob(realData, contentType);
+	var formData = new FormData();
+	formData.append('image', blob);
+
+	var xmlhttp = new XMLHttpRequest();
+	// xmlhttp.timeout = 40000;
+	xmlhttp.open("POST", "http://0.0.0.0:443/image");
+	xmlhttp.onreadystatechange = function () {
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			alert(xmlhttp.responseText);
+		}
+	}
+	xmlhttp.send(formData);
+
+	// RESULTS ADDED HERE 
+
+	$('h4').text("<results_here>");
+	$('h4').removeClass("is-gone");
 });

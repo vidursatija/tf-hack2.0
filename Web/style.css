@@ -2,7 +2,6 @@ select {
     display: inline;
 }
 
-
 .row,
 .col {
     padding: 0px;
@@ -10,8 +9,6 @@ select {
 
 .row .col.s12 {}
 
-
-/* Live camera */
 
 @keyframes snapshot {
     0% {
@@ -23,8 +20,11 @@ select {
     }
 }
 
+h1 {
+    color: black;
+}
+
 body {
-    background: #004d40;
     color: #222;
 }
 
@@ -37,7 +37,6 @@ body {
 .crop.crop--snapshot {
     animation: snapshot 0.5s ease;
 }
-
 
 .disc {
     width: 64px;
