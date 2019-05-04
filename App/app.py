@@ -30,7 +30,7 @@ def sendRequest(im):
     req = predict_pb2.PredictRequest()
     req.model_spec.name = 'resnet'
     req.model_spec.signature_name = 'predict'
-    req.inputs['input_tensor'].CopyFrom(make_tensor_proto(im, shape=[1, 224, 224, 3], dtype=tf.float32))
+    req.inputs['input'].CopyFrom(make_tensor_proto(im, shape=[1, 224, 224, 3], dtype=tf.float32))
     result = stub.Predict(req, 60.0)
     # print(result)
     predictions = np.array(result.outputs['probabilities'].float_val)

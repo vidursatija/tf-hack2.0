@@ -1,4 +1,4 @@
-<html lang="en">
+<!DOCTYPE html>
 
 <head>
 	<meta charset="UTF-8" />
@@ -16,22 +16,30 @@
 </head>
 
 <body>
+
 	<div class="container">
 		<div class="row">
-			<div class="input-field col s12 m12 ">
+			<div class="input-field col s12 m12">
 				Source:<select id="videoSource"></select>
 			</div>
-			<div class="input-field col s6 m8"></div>
 		</div>
 	</div>
 
-	<div class="row">
-		<canvas class="is-gone col s12 md6"></canvas>
-		<video class="col s12 md6 crop" muted autoplay></video><br>
-		<div class="disc disc--camera " id="take_snapshot" >camera</div>
-		<div class="disc disc--retake is-faded">retake</div>
-		<div class="disc disc--share is-gone">share</div>
+	<div class="container">
+		<div class="row">
+			<div class="col m3 s12"></div>
+			<canvas style="width: 100%; height:500px; overflow: hidden;" class="is-gone col m6 s12 crop"></canvas>
+			<video style="width: 100%; height:500px; overflow: hidden;" class="col m6 s12 crop" muted autoplay></video><br>
+			<div class="col m3 s12"></div>
+		</div>
+
+		<div class="row">
+			<div class="disc disc--camera" id="take_snapshot">camera</div>
+			<div class="disc disc--retake is-faded">retake</div>
+			<div class="disc disc--share is-gone">share</div>
+		</div>
 	</div>
+
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 	<script src="app.js" async></script>

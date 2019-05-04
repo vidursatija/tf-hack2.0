@@ -3,16 +3,13 @@ select {
 }
 
 
-canvas {
-    width: 100%;
-    position: relative;
-    max-height: 100%;
-}
-
 .row,
 .col {
     padding: 0px;
 }
+
+.row .col.s12 {}
+
 
 /* Live camera */
 
@@ -27,24 +24,18 @@ canvas {
 }
 
 body {
-    background: #000;
+    background: #004d40;
     color: #222;
 }
 
-.crop{
+.crop {
     align-content: center;
     width: 300px;
     height: 300px;
-    /* display: inline; */
-    /* position: absolute; */
 }
 
 .crop.crop--snapshot {
     animation: snapshot 0.5s ease;
-}
-
-.disc{
-    padding: 0px;
 }
 
 
@@ -54,7 +45,6 @@ body {
     border-radius: 50%;
     cursor: pointer;
     position: absolute;
-    bottom: -32px;
     transition: all 0.5s ease;
     line-height: 64px;
     text-align: center;
@@ -68,7 +58,6 @@ body {
 .disc.disc--camera {
     background: #00b494;
     left: 50%;
-    /* margin-left: -32px; */
 }
 
 .disc.disc--retake {

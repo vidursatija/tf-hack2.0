@@ -73,7 +73,8 @@ function gotDevices(deviceInfos) {
 		var device_name = deviceInfo.label.toLowerCase();
 		console.log(device_name,"*");
 		if (deviceInfo.kind === 'videoinput' && !(device_name.includes("face"))) {
-		*/ 
+		*/
+
 		if (deviceInfo.kind === 'videoinput') {
 			option.text = deviceInfo.label || 'camera ' + (videoSelect.length + 1);
 			videoSelect.appendChild(option);
@@ -91,7 +92,6 @@ function getStream() {
 			track.stop();
 		});
 	}
-
 	var constraints = {
 		audio: false,
 		video: {
@@ -100,7 +100,6 @@ function getStream() {
 			}
 		}
 	};
-
 	navigator.mediaDevices.getUserMedia(constraints).then(gotStream).catch(handleError);
 }
 
@@ -141,5 +140,6 @@ $('.disc--retake').on('click', function () {
 	}, 500);
 });
 
-// $('.disc--share').on('click', function () {
-// });
+$('.disc--share').on('click', function () {
+	console.log("SHARE CLICKED");
+});
