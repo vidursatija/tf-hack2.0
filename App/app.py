@@ -1,6 +1,7 @@
 import time
 from flask import Flask, request, jsonify, Response
 import pickle
+import json
 import numpy as np
 import base64
 from PIL import Image
@@ -65,7 +66,7 @@ def api():
     reshaped_im = np.array(img).reshape([1, 224, 224, 3])
     preds = sendRequest(reshaped_im)
     # print({"shape": list(numpy_im.shape)})
-    result = "".join(str(preds))
+    result = json.dumps({"name": preds[0], "prob": preds[1]})
     resp = Response(result)
     resp.headers['Access-Control-Allow-Origin'] = '*'
     return resp
