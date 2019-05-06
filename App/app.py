@@ -1,6 +1,7 @@
 import time
 from flask import Flask, request, jsonify, Response
 import pickle
+import json
 import numpy as np
 import base64
 from PIL import Image
@@ -25,15 +26,21 @@ stub = prediction_service_pb2.beta_create_PredictionService_stub(channel)
 f = open("imagenet_labels.txt", "r")
 label_array = f.readlines()
 f.close()
+VGG_MEAN = [103.94, 116.78, 123.68]
 
 def sendRequest(im):
+    r = im[:, :, :, 0] - VGG_MEAN[0]
+    g = im[:, :, :, 0] - VGG_MEAN[1]
+    b = im[:, :, :, 0] - VGG_MEAN[2]
+    im2 = np.stack([b, g, r], axis=-1)
+    print(im2.shape)
     req = predict_pb2.PredictRequest()
-    req.model_spec.name = 'resnet'
-    req.model_spec.signature_name = 'predict'
-    req.inputs['input'].CopyFrom(make_tensor_proto(im, shape=[1, 224, 224, 3], dtype=tf.float32))
+    req.model_spec.name = 'vgg16_with_signature'
+    req.model_spec.signature_name = 'serving_default'
+    req.inputs['bgr'].CopyFrom(make_tensor_proto(im2, shape=[1, 224, 224, 3], dtype=tf.float32))
     result = stub.Predict(req, 60.0)
     # print(result)
-    predictions = np.array(result.outputs['probabilities'].float_val)
+    predictions = np.array(result.outputs['output_0'].float_val)
     max_val = np.argmax(predictions, axis=-1)
     return label_array[max_val], predictions[max_val]
 
@@ -59,7 +66,7 @@ def api():
     reshaped_im = np.array(img).reshape([1, 224, 224, 3])
     preds = sendRequest(reshaped_im)
     # print({"shape": list(numpy_im.shape)})
-    result = "".join(str(preds))
+    result = json.dumps({"name": preds[0], "prob": preds[1]})
     resp = Response(result)
     resp.headers['Access-Control-Allow-Origin'] = '*'
     return resp

@@ -159,7 +159,7 @@ $('.disc--retake').on('click', function () {
 		$('.disc--retake').addClass('is-faded');
 		$('.disc--camera').fadeIn(100);
 	}, 500);
-	
+
 });
 
 $('.disc--share').on('click', function () {
@@ -178,13 +178,13 @@ $('.disc--share').on('click', function () {
 	xmlhttp.open("POST", "http://0.0.0.0:443/image");
 	xmlhttp.onreadystatechange = function () {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-			alert(xmlhttp.responseText);
+			// console.log(xmlhttp.responseText);
+			var pred = JSON.parse(xmlhttp.responseText)["name"];
+			$('h4').text(pred);
+			$('h4').removeClass("is-gone");
+			// alert(xmlhttp.responseText);
+			// alert(xmlhttp.responseText[0]);
 		}
 	}
 	xmlhttp.send(formData);
-
-	// RESULTS ADDED HERE 
-
-	$('h4').text("<results_here>");
-	$('h4').removeClass("is-gone");
 });
