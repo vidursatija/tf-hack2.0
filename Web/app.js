@@ -174,16 +174,21 @@ $('.disc--share').on('click', function () {
 	formData.append('image', blob);
 
 	var xmlhttp = new XMLHttpRequest();
-	// xmlhttp.timeout = 40000;
 	xmlhttp.open("POST", "http://0.0.0.0:443/image");
 	xmlhttp.onreadystatechange = function () {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-			// console.log(xmlhttp.responseText);
-			var pred = JSON.parse(xmlhttp.responseText)["name"];
-			$('h4').text(pred);
+			
+			var response = JSON.parse(xmlhttp.responseText);
+			var pred = response["name"];
+			var value = response["value"];
+			var text = "Sorry, " + pred + " cannot be recycled 😢";
+
+			if(yellowBinItems.hasOwnProperty(value)){
+				text = "Yay! " + pred + " can be recycled 🎉" ;
+			}
+
 			$('h4').removeClass("is-gone");
-			// alert(xmlhttp.responseText);
-			// alert(xmlhttp.responseText[0]);
+			$('h4').text(text);
 		}
 	}
 	xmlhttp.send(formData);
