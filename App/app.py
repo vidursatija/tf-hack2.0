@@ -34,8 +34,8 @@ def sendRequest(im):
     """
 
     r = im[:, :, :, 0] - VGG_MEAN[0]
-    g = im[:, :, :, 0] - VGG_MEAN[1]
-    b = im[:, :, :, 0] - VGG_MEAN[2]
+    g = im[:, :, :, 1] - VGG_MEAN[1]
+    b = im[:, :, :, 2] - VGG_MEAN[2]
     im2 = np.stack([b, g, r], axis=-1)
     print(im2.shape)
     req = predict_pb2.PredictRequest()
