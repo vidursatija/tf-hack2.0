@@ -174,7 +174,7 @@ $('.disc--share').on('click', function () {
 	formData.append('image', blob);
 
 	var xmlhttp = new XMLHttpRequest();
-	xmlhttp.open("POST", "http://0.0.0.0:443/image");
+	xmlhttp.open("POST", "https://hack3r.herokuapp.com/image");
 	xmlhttp.onreadystatechange = function () {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 			
